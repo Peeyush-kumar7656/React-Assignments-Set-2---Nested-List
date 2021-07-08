@@ -1,4 +1,6 @@
-import React, { Component, useState } from "react";
+import React from 'react'
+
+import{ Component, useEffect, useState } from "react";
 import "./../styles/App.css";
 
 // Do not alter the states const and values inside it.
@@ -154,8 +156,114 @@ const states = [
   },
 ];
 
-function App() {
-  return <div id="main"></div>;
+
+function Townprint(props){
+
+    return (
+        <div>
+          <li id={"town"+(props.index+1)}>{props.towns.name}</li>
+        </div>
+    )
 }
 
+function Town(props){
+   
+    return (
+       
+        <div>
+           <ul>
+               {
+                   props.towns.map((town,index)=>{
+                       return (
+                           <Townprint index={index} towns={town}></Townprint>
+                       )
+                   })
+               }
+           </ul>
+        </div>
+
+    )
+    
+
+}
+
+
+function Cityprint(props){
+   
+    const [getFlag,setFlag] = useState(false);
+
+    const hideANDshow=(e)=>{
+        e.stopPropagation();
+          if(getFlag)
+             setFlag(false)
+          else
+            setFlag(true)  
+    }
+
+    return (
+        <div>
+           <li id={"city"+(props.index+1)} onClick={hideANDshow}>{props.cities.name}
+             { getFlag && <Town towns={props.cities.towns}></Town>}
+           </li>
+        </div>
+    )
+
+}
+
+function City(props){
+
+    return (
+        <div>
+           <ul>
+                {
+                    props.cities.map((city,index)=>{
+                        return (
+                            <Cityprint index={index} cities={city}></Cityprint>
+                        )
+                    })
+                }
+           </ul>
+        </div>
+    )
+
+}
+
+
+function State(props){
+    const [getFlag,setFlag] = useState(false);
+
+    const hideANDshow2=(e)=>{
+        e.stopPropagation();
+        if(getFlag)
+           setFlag(false)
+        else
+          setFlag(true)  
+      }
+   
+    return (
+        
+            <div>
+              <li id={"state"+(props.index+1)} onClick={hideANDshow2}>{props.states.name}
+                 { getFlag && <City cities={props.states.cities}></City>}
+              </li>
+            </div>
+        
+
+    )
+}
+function App() {
+    return (
+        <div id="main"> 
+            <ul>
+                {
+                    states.map((state,index)=>{
+                       
+                        return    <State index={index} states={state}></State>
+                        
+                    })
+                }
+            </ul>
+        </div>
+    )
+}
 export default App;
